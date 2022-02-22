@@ -45,7 +45,9 @@ end
 
 "reference bus angle constraint"
 function constraint_theta_ref(pm::AbstractACRModel, n::Int, i::Int)
-    JuMP.@constraint(pm.model, var(pm, n, :vi)[i] == 0)
+    va = ref(pm, n, :bus, i, "va")
+    vm = ref(pm, n, :bus, i, "vm")
+    JuMP.@constraint(pm.model, var(pm, n, :vi)[i] == vm*sin(va))
 end
 
 
